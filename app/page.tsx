@@ -1,5 +1,6 @@
 "use client"
 
+import Navbar from '@/components/navbar';
 import Stepper, { Step } from '@/components/Stepper/Stepper';
 import { useState } from 'react';
 export default function Page (
@@ -8,7 +9,9 @@ export default function Page (
 {
     const [name, setName] = useState(""); // <-- adicionando estado
     return (
-        <div> 
+      <div>
+      <Navbar/>
+ 
             <Stepper
   initialStep={1}
   onStepChange={(step) => {
