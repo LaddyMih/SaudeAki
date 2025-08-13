@@ -10,7 +10,7 @@ export default function Navbar () {
       {/* Esquerda */}
       <div className="flex items-center">
         <Link
-          href="/login"
+          href="/"
           className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out"
         >
           Saúde Aki

@@ -1,15 +1,11 @@
-import Navbar from "@/components/navbar";
-import StepperForm from "@/components/Stepper/StepperForm"; 
+"use client"
 
+import { LoginForm } from "@/app/login/login-form"
 
-
-export default function LoginPage() {
-  return (
-    <div>
-      <Navbar />
-      <div className="p-8">
-        <StepperForm/>
-      </div>
-    </div>
-  );
+export default function Page() {
+    return (
+<>
+<LoginForm />
+</>
+    )
 }
