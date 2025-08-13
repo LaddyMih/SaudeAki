@@ -10,7 +10,7 @@ export default function Navbar () {
       {/* Esquerda */}
       <div className="flex items-center">
         <Link
-          href="/"
+          href="/login"
           className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out"
         >
           Saúde Aki
@@ -21,13 +21,14 @@ export default function Navbar () {
       <div className={cn(titleFont.className,"flex justify-center items-center gap-10")}>
         
         <Link href="/" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Início</Link>
-        <p>Treinos</p>
-        <p>Artigos</p>
+        <Link href="/" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Treinos</Link>
+        <Link href="/" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Artigos</Link>
+       
       </div>
 
       {/* Direita */}
       <div>
-        <Link href="/" passHref>
+        <Link href="/login" passHref>
           <Button
             className={cn(
               "text-white bg-black w-[10rem] font-normal",

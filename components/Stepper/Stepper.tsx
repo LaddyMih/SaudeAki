@@ -88,7 +88,7 @@ export default function Stepper({
     >
       <div
         className={`mx-auto w-full max-w-md rounded-4xl shadow-xl ${stepCircleContainerClassName}`}
-        style={{ border: "1px solid #222" }}
+        style={{ border: "1px solid #009cb4ff" }}
       >
         <div
           className={`${stepContainerClassName} flex w-full items-center p-8`}
@@ -302,9 +302,9 @@ function StepIndicator({
     >
       <motion.div
         variants={{
-          inactive: { scale: 1, backgroundColor: "#222", color: "#a3a3a3" },
-          active: { scale: 1, backgroundColor: "#5227FF", color: "#5227FF" },
-          complete: { scale: 1, backgroundColor: "#5227FF", color: "#3b82f6" },
+          inactive: { scale: 1, backgroundColor: "#222", color: "#efededff" },
+          active: { scale: 1, backgroundColor: "#079eb5ff", color: "#5227FF" },
+          complete: { scale: 1, backgroundColor: "#07c1ddff", color: "#0882a0ff" },
         }}
         transition={{ duration: 0.3 }}
         className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
@@ -328,7 +328,7 @@ interface StepConnectorProps {
 function StepConnector({ isComplete }: StepConnectorProps) {
   const lineVariants: Variants = {
     incomplete: { width: 0, backgroundColor: "transparent" },
-    complete: { width: "100%", backgroundColor: "#5227FF" },
+    complete: { width: "100%", backgroundColor: "#8f93d1ff" },
   };
 
   return (
