@@ -1,5 +1,4 @@
 // Criando os cards da página inicial
-// Criando os cards da página inicial
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { titleFont } from "@/fonts/fonts";
 import { cn } from "@/lib/utils";
@@ -9,7 +8,7 @@ export default function Cartao() {
   return (
     <div className="grid grid-cols-3 gap-6 p-6">
       {/* Card 1 */}
-      <Card className="relative h-96 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent">
+      <Card className="relative h-150 w-100 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:backdrop-blur-sm">
         <Image
           src="/imagens/treino.jpg"
           alt="Treine como nunca"
@@ -32,7 +31,7 @@ export default function Cartao() {
       </Card>
 
       {/* Card 2 */}
-      <Card className="relative h-96 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent">
+      <Card className="relative h-150 w-100 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:backdrop-blur-sm">
         <Image
           src="/imagens/Alimentação.jpg"
           alt="Planos alimentares"
@@ -54,7 +53,7 @@ export default function Cartao() {
       </Card>
 
       {/* Card 3 */}
-      <Card className="relative h-96 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent">
+      <Card className="relative h-150 w-100 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:backdrop-blur-sm">
         <Image
           src="/imagens/Monitoramento.jpg"
           alt="Monitoramento"
@@ -77,3 +76,4 @@ export default function Cartao() {
     </div>
   );
 }
+

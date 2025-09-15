@@ -6,7 +6,7 @@ import { titleFont } from "@/fonts/fonts";
 export default function Navbar () {
     return (
         // Cabeçalho fixed (fixado)
-        <nav className="fixed top-0 left-0 right-0 mx-[0.25rem] bg-white border-2 lg:border-0 lg:bg-transparent border-solid rounded-lg flex items-center justify-between px-4">
+        <nav className="fixed top-0 left-0 right-0 mx-[0.25rem] bg-white border-2 lg:border-0 lg:bg-white border-solid rounded-lg flex items-center justify-between px-4">
       {/* Esquerda */}
       <div className="flex items-center">
         <Link
@@ -21,7 +21,7 @@ export default function Navbar () {
       <div className={cn(titleFont.className,"flex justify-center items-center gap-10")}>
         
         <Link href="/" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Início</Link>
-        <Link href="/" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Treinos</Link>
+        <Link href="/Cards/card" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Treinos</Link>
         <Link href="/" className="text-black text-center no-underline font-bold hover:text-slate-500 transition-colors duration-200 ease-in-out">Artigos</Link>
        
       </div>
