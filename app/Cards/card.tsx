@@ -1,79 +1,69 @@
-// Criando os cards da página inicial
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { titleFont } from "@/fonts/fonts";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 export default function Cartao() {
   return (
-    <div className="grid grid-cols-3 gap-6 p-6">
-      {/* Card 1 */}
-      <Card className="relative h-150 w-100 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:backdrop-blur-sm">
-        <Image
-          src="/imagens/treino.jpg"
-          alt="Treine como nunca"
-          fill
-          className="absolute inset-0 object-cover -z-20"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 -z-10"></div>
+    <section className="w-full px-6 py-12 bg-gray-50">
+      {/* Título da seção */}
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-extrabold text-gray-900">
+          Nossos Serviços Personalizados
+        </h2>
+        <p className="mt-3 text-lg text-gray-600">
+          Descubra soluções que cuidam do seu corpo e mente com excelência
+        </p>
+      </div>
 
-        {/* Conteúdo centralizado */}
-        <div className="flex flex-col items-center justify-center text-center z-10">
-          <CardHeader className="flex justify-center">
-            <CardTitle className="text-center text-2xl">
-              Treino personalizado
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            Planos de exercícios adaptados para você
-          </CardContent>
-        </div>
-      </Card>
+      {/* Grid dos Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+        {/* Função para criar cards */}
+        {[
+          {
+            title: "Treino Personalizado",
+            text: "Planos de exercícios adaptados para você.",
+            img: "/imagens/treino.jpg",
+          },
+          {
+            title: "Planos Alimentares",
+            text: "Dicas de dieta para uma alimentação saudável.",
+            img: "/imagens/Alimentação.jpg",
+          },
+          {
+            title: "Monitoramento",
+            text: "Acompanhe seu progresso e resultados.",
+            img: "/imagens/Monitoramento.jpg",
+          },
+        ].map((card, index) => (
+          <div
+            key={index}
+            className="relative h-[400px] w-full overflow-hidden rounded-3xl shadow-2xl group cursor-pointer perspective"
+          >
+            {/* Imagem com parallax e zoom */}
+            <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 group-hover:translate-y-[-5px]">
+              <Image
+                src={card.img}
+                alt={card.title}
+                fill
+                sizes="100vw"
+                className="object-cover transition-transform duration-700 group-hover:blur-[0.3px]"
+              />
+            </div>
 
-      {/* Card 2 */}
-      <Card className="relative h-150 w-100 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:backdrop-blur-sm">
-        <Image
-          src="/imagens/Alimentação.jpg"
-          alt="Planos alimentares"
-          fill
-          className="absolute inset-0 object-cover -z-20"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 -z-10"></div>
+            {/* Gradiente sutil */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent transition-all duration-700 group-hover:from-black/50"></div>
 
-        <div className="flex flex-col items-center justify-center text-center z-10">
-          <CardHeader className="flex justify-center">
-            <CardTitle className="text-center text-2xl">
-              Planos alimentares
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            Dicas de dieta para uma alimentação saudável
-          </CardContent>
-        </div>
-      </Card>
-
-      {/* Card 3 */}
-      <Card className="relative h-150 w-100 flex flex-col justify-center items-center text-white overflow-hidden bg-transparent transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:backdrop-blur-sm">
-        <Image
-          src="/imagens/Monitoramento.jpg"
-          alt="Monitoramento"
-          fill
-          className="absolute inset-0 object-cover -z-20"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/60 -z-10"></div>
-
-        <div className="flex flex-col items-center justify-center text-center z-10">
-          <CardHeader className="flex justify-center">
-            <CardTitle className="text-center text-2xl">
-              Monitoramento
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="text-center">
-            Acompanhe seu progresso e resultados
-          </CardContent>
-        </div>
-      </Card>
-    </div>
+            {/* Conteúdo do card */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-center text-white transition-all duration-700 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100">
+              <h3 className="text-2xl font-semibold mb-2 drop-shadow-md">
+                {card.title}
+              </h3>
+              <p className="text-sm mb-4 drop-shadow-sm">{card.text}</p>
+              <button className="px-5 py-2 border border-white text-white font-semibold rounded-full backdrop-blur-md bg-white/20 shadow-lg hover:bg-white hover:text-gray-900 transition">
+                Saiba mais
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
-
