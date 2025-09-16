@@ -1,39 +1,36 @@
-// ------------------ IMPORTAÇÕES PRINCIPAIS ------------------
 import React, {
-  useState, // Gerencia estados dentro do componente
-  Children, // Permite manipular os elementos filhos do Stepper
-  useRef, // Cria referência a elementos do DOM
-  useLayoutEffect, // Executa efeitos após o layout ser calculado
+  useState,
+  Children,
+  useRef,
+  useLayoutEffect,
   HTMLAttributes,
   ReactNode,
 } from "react";
-import { useRouter } from "next/navigation"; // Hook do Next.js para navegação entre páginas
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
-import { motion, AnimatePresence, Variants } from "motion/react"; // Animações do Framer Motion
-
-// ------------------ DEFINIÇÃO DAS PROPS DO STEPPER ------------------
 interface StepperProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode; // Cada passo é um filho do Stepper
-  initialStep?: number; // Passo inicial do Stepper
-  onStepChange?: (step: number) => void; // Callback chamado ao mudar de passo
-  onFinalStepCompleted?: () => void; // Callback chamado quando todos os passos são completados
-  stepCircleContainerClassName?: string; // Classe CSS do container dos círculos
-  stepContainerClassName?: string; // Classe CSS do container de steps
-  contentClassName?: string; // Classe CSS do conteúdo de cada step
-  footerClassName?: string; // Classe CSS do rodapé (botões)
-  backButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>; // Props adicionais do botão "Back"
-  nextButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>; // Props adicionais do botão "Next"
-  backButtonText?: string; // Texto do botão "Back"
-  nextButtonText?: string; // Texto do botão "Next"
-  disableStepIndicators?: boolean; // Desativa clique nos indicadores
+  children: ReactNode;
+  initialStep?: number;
+  onStepChange?: (step: number) => void;
+  onFinalStepCompleted?: () => void;
+  stepCircleContainerClassName?: string;
+  stepContainerClassName?: string;
+  contentClassName?: string;
+  footerClassName?: string;
+  backButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+  nextButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+  backButtonText?: string;
+  nextButtonText?: string;
+  disableStepIndicators?: boolean;
   renderStepIndicator?: (props: {
     step: number;
     currentStep: number;
     onStepClick: (clicked: number) => void;
-  }) => ReactNode; // Renderização customizada dos indicadores
+  }) => ReactNode;
+  canProceed?: (currentStep: number) => boolean; // Função para validar avanço
 }
 
-// ------------------ COMPONENTE PRINCIPAL ------------------
 export default function Stepper({
   children,
   initialStep = 1,
@@ -45,53 +42,58 @@ export default function Stepper({
   footerClassName = "",
   backButtonProps = {},
   nextButtonProps = {},
-  backButtonText = "Back",
-  nextButtonText = "Continue",
+  backButtonText = "Voltar",
+  nextButtonText = "Continuar",
   disableStepIndicators = false,
   renderStepIndicator,
+  canProceed = () => true,
   ...rest
 }: StepperProps) {
-  const router = useRouter(); // Instância do roteamento
+  const router = useRouter();
 
-  const [currentStep, setCurrentStep] = useState<number>(initialStep); // Estado do passo atual
-  const [direction, setDirection] = useState<number>(0); // Direção da animação (-1 = voltar, 1 = avançar)
+  const [currentStep, setCurrentStep] = useState<number>(initialStep);
+  const [direction, setDirection] = useState<number>(0);
 
-  const stepsArray = Children.toArray(children); // Converte os filhos em array
-  const totalSteps = stepsArray.length; // Quantidade total de passos
-  const isCompleted = currentStep > totalSteps; // Indica se todos os passos foram completados
-  const isLastStep = currentStep === totalSteps; // Indica se o passo atual é o último
+  const stepsArray = Children.toArray(children);
+  const totalSteps = stepsArray.length;
+  const isCompleted = currentStep > totalSteps;
+  const isLastStep = currentStep === totalSteps;
 
-  // ------------------ FUNÇÃO PARA ATUALIZAR O PASSO ------------------
   const updateStep = (newStep: number) => {
     setCurrentStep(newStep);
     if (newStep > totalSteps) {
-      onFinalStepCompleted(); // Chama callback de finalização
-      router.push("/"); // Redireciona para a página inicial após terminar
+      onFinalStepCompleted();
+      router.push("/");
     } else {
-      onStepChange(newStep); // Chama callback de mudança de passo
+      onStepChange(newStep);
     }
   };
 
-  // ------------------ FUNÇÃO PARA VOLTAR UM PASSO ------------------
   const handleBack = () => {
     if (currentStep > 1) {
-      setDirection(1); // Define direção da animação para voltar
+      setDirection(1);
       updateStep(currentStep - 1);
     }
   };
 
-  // ------------------ FUNÇÃO PARA AVANÇAR UM PASSO ------------------
   const handleNext = () => {
     if (!isLastStep) {
-      setDirection(-1); // Define direção da animação para frente
-      updateStep(currentStep + 1);
+      if (canProceed(currentStep)) {
+        setDirection(-1);
+        updateStep(currentStep + 1);
+      } else {
+        alert("Por favor, preencha os dados corretamente antes de continuar.");
+      }
     }
   };
 
-  // ------------------ FUNÇÃO PARA COMPLETAR TODOS OS PASSOS ------------------
   const handleComplete = () => {
-    setDirection(1); // Direção da animação
-    updateStep(totalSteps + 1); // Atualiza para além do último passo, disparando redirecionamento
+    if (canProceed(currentStep)) {
+      setDirection(1);
+      updateStep(totalSteps + 1);
+    } else {
+      alert("Por favor, preencha os dados corretamente antes de finalizar.");
+    }
   };
 
   return (
@@ -99,12 +101,11 @@ export default function Stepper({
       className="flex min-h-full flex-1 flex-col items-center justify-center p-4 sm:aspect-[4/3] md:aspect-[2/1]"
       {...rest}
     >
-      {/* Container principal do Stepper */}
       <div
         className={`mx-auto w-full max-w-md rounded-4xl shadow-xl ${stepCircleContainerClassName}`}
         style={{ border: "1px solid #009cb4ff" }}
       >
-        {/* Cabeçalho com indicadores dos passos */}
+        {/* Indicadores */}
         <div className={`${stepContainerClassName} flex w-full items-center p-8`}>
           {stepsArray.map((_, index) => {
             const stepNumber = index + 1;
@@ -112,14 +113,13 @@ export default function Stepper({
 
             return (
               <React.Fragment key={stepNumber}>
-                {/* Indicador de passo (padrão ou custom) */}
                 {renderStepIndicator ? (
                   renderStepIndicator({
                     step: stepNumber,
                     currentStep,
                     onStepClick: (clicked) => {
-                      setDirection(clicked > currentStep ? 1 : -1); // Define direção
-                      updateStep(clicked); // Atualiza passo
+                      setDirection(clicked > currentStep ? 1 : -1);
+                      updateStep(clicked);
                     },
                   })
                 ) : (
@@ -134,14 +134,13 @@ export default function Stepper({
                   />
                 )}
 
-                {/* Linha de conexão entre os passos */}
                 {isNotLastStep && <StepConnector isComplete={currentStep > stepNumber} />}
               </React.Fragment>
             );
           })}
         </div>
 
-        {/* Conteúdo do passo atual */}
+        {/* Conteúdo animado do passo */}
         <StepContentWrapper
           isCompleted={isCompleted}
           currentStep={currentStep}
@@ -155,9 +154,9 @@ export default function Stepper({
         {!isCompleted && (
           <div className={`px-8 pb-8 ${footerClassName}`}>
             <div className={`mt-10 flex ${currentStep !== 1 ? "justify-between" : "justify-end"}`}>
-              {/* Botão voltar */}
               {currentStep !== 1 && (
                 <button
+                  disabled={currentStep === 1}
                   onClick={handleBack}
                   className={`duration-350 rounded px-2 py-1 transition ${
                     currentStep === 1
@@ -170,8 +169,8 @@ export default function Stepper({
                 </button>
               )}
 
-              {/* Botão próximo ou finalizar */}
               <button
+                disabled={!canProceed(currentStep)}
                 onClick={isLastStep ? handleComplete : handleNext}
                 className="duration-350 flex items-center justify-center rounded-full bg-green-500 py-1.5 px-3.5 font-medium tracking-tight text-white transition hover:bg-green-600 active:bg-green-700"
                 {...nextButtonProps}
@@ -186,12 +185,12 @@ export default function Stepper({
   );
 }
 
-// ------------------ COMPONENTE StepContentWrapper ------------------
-// Responsável por animar o conteúdo do passo
+// Componentes auxiliares
+
 interface StepContentWrapperProps {
-  isCompleted: boolean; // Indica se o Stepper foi completado
+  isCompleted: boolean;
   currentStep: number;
-  direction: number; // Direção da animação
+  direction: number;
   children: ReactNode;
   className?: string;
 }
@@ -203,12 +202,12 @@ function StepContentWrapper({
   children,
   className = "",
 }: StepContentWrapperProps) {
-  const [parentHeight, setParentHeight] = useState<number>(0); // Altura do container para animação
+  const [parentHeight, setParentHeight] = useState<number>(0);
 
   return (
     <motion.div
       style={{ position: "relative", overflow: "hidden" }}
-      animate={{ height: isCompleted ? 0 : parentHeight }} // Anima altura
+      animate={{ height: isCompleted ? 0 : parentHeight }}
       transition={{ type: "spring", duration: 0.4 }}
       className={className}
     >
@@ -227,28 +226,32 @@ function StepContentWrapper({
   );
 }
 
-// ------------------ COMPONENTE SlideTransition ------------------
 interface SlideTransitionProps {
   children: ReactNode;
-  direction: number; // Direção da animação
-  onHeightReady: (height: number) => void; // Callback para altura
+  direction: number;
+  onHeightReady: (height: number) => void;
 }
 
 function SlideTransition({ children, direction, onHeightReady }: SlideTransitionProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Atualiza a altura do container sempre que o conteúdo muda
   useLayoutEffect(() => {
     if (containerRef.current) {
       onHeightReady(containerRef.current.offsetHeight);
     }
   }, [children, onHeightReady]);
 
+  const stepVariants: Variants = {
+    enter: (dir: number) => ({ x: dir >= 0 ? "-100%" : "100%", opacity: 0 }),
+    center: { x: "0%", opacity: 1 },
+    exit: (dir: number) => ({ x: dir >= 0 ? "50%" : "-50%", opacity: 0 }),
+  };
+
   return (
     <motion.div
       ref={containerRef}
       custom={direction}
-      variants={stepVariants} // Variantes de animação
+      variants={stepVariants}
       initial="enter"
       animate="center"
       exit="exit"
@@ -260,18 +263,6 @@ function SlideTransition({ children, direction, onHeightReady }: SlideTransition
   );
 }
 
-// ------------------ VARIANTES DE ANIMAÇÃO ------------------
-const stepVariants: Variants = {
-  enter: (dir: number) => ({ x: dir >= 0 ? "-100%" : "100%", opacity: 0 }),
-  center: { x: "0%", opacity: 1 },
-  exit: (dir: number) => ({ x: dir >= 0 ? "50%" : "-50%", opacity: 0 }),
-};
-
-// ------------------ COMPONENTE STEP ------------------
-interface StepProps { children: ReactNode; }
-export function Step({ children }: StepProps) { return <div className="px-8">{children}</div>; }
-
-// ------------------ INDICADOR DE CADA PASSO ------------------
 interface StepIndicatorProps {
   step: number;
   currentStep: number;
@@ -286,14 +277,16 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators =
     if (step !== currentStep && !disableStepIndicators) onClickStep(step);
   };
 
+  const variants = {
+    inactive: { scale: 1, backgroundColor: "#222", color: "#efededff" },
+    active: { scale: 1, backgroundColor: "#079eb5ff", color: "#5227FF" },
+    complete: { scale: 1, backgroundColor: "#07c1ddff", color: "#0882a0ff" },
+  };
+
   return (
     <motion.div onClick={handleClick} className="relative cursor-pointer outline-none focus:outline-none" animate={status} initial={false}>
       <motion.div
-        variants={{
-          inactive: { scale: 1, backgroundColor: "#222", color: "#efededff" },
-          active: { scale: 1, backgroundColor: "#079eb5ff", color: "#5227FF" },
-          complete: { scale: 1, backgroundColor: "#07c1ddff", color: "#0882a0ff" },
-        }}
+        variants={variants}
         transition={{ duration: 0.3 }}
         className="flex h-8 w-8 items-center justify-center rounded-full font-semibold"
       >
@@ -309,7 +302,6 @@ function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators =
   );
 }
 
-// ------------------ LINHA CONECTORA ENTRE PASSOS ------------------
 interface StepConnectorProps { isComplete: boolean; }
 
 function StepConnector({ isComplete }: StepConnectorProps) {
@@ -331,7 +323,6 @@ function StepConnector({ isComplete }: StepConnectorProps) {
   );
 }
 
-// ------------------ ÍCONE DE CHECK ------------------
 interface CheckIconProps extends React.SVGProps<SVGSVGElement> {}
 
 function CheckIcon(props: CheckIconProps) {
@@ -347,4 +338,9 @@ function CheckIcon(props: CheckIconProps) {
       />
     </svg>
   );
+}
+
+
+export function Step({ children }: { children: ReactNode }) {
+  return <div className="px-8">{children}</div>;
 }
