@@ -4,7 +4,6 @@ import { useState } from "react";
 import Stepper, { Step } from "@/components/Stepper/Stepper";
 
 export default function StepperForm() {
-  const [currentStep, setCurrentStep] = useState(1);
   const [name, setName] = useState("");
   const [idade, setIdade] = useState("");
   const [peso, setPeso] = useState("");
@@ -14,69 +13,40 @@ export default function StepperForm() {
   const [cidade, setCidade] = useState("");
   const [telefone, setTelefone] = useState("");
 
+  // Função para calcular o IMC
   const calcularIMC = () => {
     const pesoNum = parseFloat(peso);
     const alturaNum = parseFloat(altura);
-    if (!isNaN(pesoNum) && !isNaN(alturaNum) && pesoNum > 0 && alturaNum > 0) {
-      return (pesoNum / (alturaNum * alturaNum)).toFixed(2);
+
+    // Se altura for digitada em centímetros (ex: 170), converte para metros
+    const alturaMetros = alturaNum > 10 ? alturaNum / 100 : alturaNum;
+
+    if (!isNaN(pesoNum) && !isNaN(alturaMetros) && pesoNum > 0 && alturaMetros > 0) {
+      return (pesoNum / (alturaMetros * alturaMetros)).toFixed(2);
     }
-    return null;
+    return "";
   };
 
-  const classificarIMC = (imc: number | null) => {
+  // Função para classificar o IMC
+  const classificarIMC = (imc: string) => {
     if (!imc) return "";
-    if (imc < 18.5) return "Abaixo do peso";
-    if (imc >= 18.5 && imc < 25) return "Peso normal";
-    if (imc >= 25 && imc < 30) return "Sobrepeso";
-    if (imc >= 30) return "Obesidade";
+    const valor = parseFloat(imc);
+    if (valor < 18.5) return "Abaixo do peso";
+    if (valor >= 18.5 && valor < 25) return "Peso normal";
+    if (valor >= 25 && valor < 30) return "Sobrepeso";
+    if (valor >= 30) return "Obesidade";
     return "";
   };
 
   const imc = calcularIMC();
 
-  // Valida o passo atual
-  const isStepValid = (step: number) => {
-    switch (step) {
-      case 2: return name.trim() !== "";
-      case 3: return idade !== "" && parseInt(idade) > 0;
-      case 4: return peso !== "" && parseFloat(peso) > 0;
-      case 5: return altura !== "" && parseFloat(altura) > 0;
-      case 6: return objetivo !== "";
-      case 7: 
-        return (
-          email.trim() !== "" &&
-          /\S+@\S+\.\S+/.test(email) &&
-          cidade.trim() !== "" &&
-          telefone.trim() !== ""
-        );
-      default: return true;
-    }
-  };
-
-  // Mostra alert se tentar avançar sem preencher
-  const handleNextStep = () => {
-    if (isStepValid(currentStep)) {
-      setCurrentStep((prev) => prev + 1);
-    } else {
-      alert("Por favor, preencha os dados corretamente antes de continuar.");
-    }
-  };
-
   return (
     <Stepper
       initialStep={1}
-      onStepChange={setCurrentStep}
+      onStepChange={(step) => console.log("Step:", step)}
+      onFinalStepCompleted={() => console.log("Todos os passos concluídos!")}
       backButtonText="Anterior"
       nextButtonText="Próximo"
-      nextButtonProps={{
-        disabled: !isStepValid(currentStep),
-        className: `duration-350 flex items-center justify-center rounded-full py-1.5 px-3.5 font-medium tracking-tight text-white transition ${
-          !isStepValid(currentStep)
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-green-500 hover:bg-green-600 active:bg-green-700"
-        }`,
-      }}
-      canProceed={isStepValid}
     >
       <Step>
         <h2>Seja bem-vindo(a)!</h2>
@@ -111,7 +81,7 @@ export default function StepperForm() {
           type="number"
           value={peso}
           onChange={(e) => setPeso(e.target.value)}
-          placeholder="Digite seu peso"
+          placeholder="Digite seu peso em kg"
           className="border rounded px-2 py-1 w-24"
         />
       </Step>
@@ -123,7 +93,7 @@ export default function StepperForm() {
           step="0.01"
           value={altura}
           onChange={(e) => setAltura(e.target.value)}
-          placeholder="Digite sua altura"
+          placeholder="Digite sua altura (ex: 1.70 ou 170)"
           className="border rounded px-2 py-1 w-24"
         />
       </Step>
@@ -149,23 +119,23 @@ export default function StepperForm() {
         <h2>Cadastro</h2>
         <input
           type="email"
-          placeholder="Seu email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          placeholder="Seu email"
           className="border rounded px-2 py-1 w-full mb-2"
         />
         <input
           type="text"
-          placeholder="Cidade"
           value={cidade}
           onChange={(e) => setCidade(e.target.value)}
+          placeholder="Cidade"
           className="border rounded px-2 py-1 w-full mb-2"
         />
         <input
           type="tel"
-          placeholder="Telefone"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
+          placeholder="Telefone"
           className="border rounded px-2 py-1 w-full"
         />
       </Step>
@@ -175,7 +145,7 @@ export default function StepperForm() {
         {imc ? (
           <>
             <p>Seu IMC é <strong>{imc}</strong>.</p>
-            <p>Classificação: <strong>{classificarIMC(parseFloat(imc))}</strong></p>
+            <p>Classificação: <strong>{classificarIMC(imc)}</strong></p>
           </>
         ) : (
           <p>Preencha peso e altura válidos para calcular o IMC.</p>

@@ -1,27 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { serialize } from "cookie";
 
-// "Banco de dados" temporário (só para testes)
-let users: { email: string; password: string }[] = [];
+const JWT_SECRET = process.env.JWT_SECRET || "seusegredo";
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
 
-  if (!email || !password) {
-    return NextResponse.json(
-      { message: "Email e senha são obrigatórios" },
-      { status: 400 }
-    );
-  }
+  const [rows]: any = await db.query("SELECT * FROM Usuario WHERE email = ?", [email]);
+  const user = rows[0];
+  if (!user) return NextResponse.json({ error: "Usuário não encontrado" }, { status: 401 });
 
-  const user = users.find(u => u.email === email);
+  const isValid = await bcrypt.compare(password, user.senha);
+  if (!isValid) return NextResponse.json({ error: "Senha inválida" }, { status: 401 });
 
-  if (!user) {
-    users.push({ email, password });
-    return NextResponse.json({ message: "Usuário criado com sucesso" }, { status: 201 });
-  } else {
-    if (user.password !== password) {
-      return NextResponse.json({ message: "Senha incorreta" }, { status: 401 });
-    }
-    return NextResponse.json({ message: "Login realizado com sucesso" }, { status: 200 });
-  }
+  const token = jwt.sign({ id: user.id, name: user.nome, email: user.email }, JWT_SECRET, { expiresIn: "7d" });
+
+  const cookie = serialize("token", token, { httpOnly: true, path: "/", maxAge: 7 * 24 * 60 * 60 });
+
+  return NextResponse.json({ ok: true }, { headers: { "Set-Cookie": cookie } });
 }

@@ -1,11 +1,7 @@
-"use client"
+"use client";
 
-import { LoginForm } from "@/app/login/login-form"
+import { LoginForm } from "./login-form";
 
 export default function Page() {
-    return (
-<>
-<LoginForm />
-</>
-    )
+  return <LoginForm />;
 }
