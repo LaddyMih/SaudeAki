@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Cartao() {
   return (
@@ -21,16 +22,19 @@ export default function Cartao() {
             title: "Treino Personalizado",
             text: "Planos de exercícios adaptados para você.",
             img: "/imagens/treino.jpg",
+            link: "/treinos",
           },
           {
             title: "Planos Alimentares",
             text: "Dicas de dieta para uma alimentação saudável.",
             img: "/imagens/Alimentação.jpg",
+            link: "/planos",
           },
           {
             title: "Monitoramento",
             text: "Acompanhe seu progresso e resultados.",
             img: "/imagens/Monitoramento.jpg",
+            link: "/monitoramento",
           },
         ].map((card, index) => (
           <div
@@ -57,9 +61,13 @@ export default function Cartao() {
                 {card.title}
               </h3>
               <p className="text-sm mb-4 drop-shadow-sm">{card.text}</p>
-              <button className="px-5 py-2 border border-white text-white font-semibold rounded-full backdrop-blur-md bg-white/20 shadow-lg hover:bg-white hover:text-gray-900 transition">
-                Saiba mais
-              </button>
+
+              {/* Botão com Link */}
+              <Link href={card.link}>
+                <button className="px-5 py-2 border border-white text-white font-semibold rounded-full backdrop-blur-md bg-white/20 shadow-lg hover:bg-white hover:text-gray-900 transition">
+                  Saiba mais
+                </button>
+              </Link>
             </div>
           </div>
         ))}
