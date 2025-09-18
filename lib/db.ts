@@ -1,9 +1,13 @@
-import mysql from "mysql2/promise";
+/**
+ * This file is responsible for setting up Prisma.
+ */
 
-export const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "My1234",
-  database: "saudeaki",
-});
-  
+import { PrismaClient } from "@prisma/client";
+
+declare global {
+    export var prisma: PrismaClient| undefined;
+}
+
+export const db = globalThis.prisma || new PrismaClient();
+
+if(process.env.NODE_ENV !== "production") globalThis.prisma = db;

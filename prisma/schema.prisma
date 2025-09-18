@@ -16,17 +16,62 @@ datasource db {
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
  
-model Usuario {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  nome      String
-  idade     Int
-  email     String   @unique
-  telefone  String
-  cidade    String
-  peso      Float
-  altura    Float
-  imc       Float
-  senha     String
+// model Usuario {
+//  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//  nome      String
+//  idade     Int
+//  email     String   @unique
+//  telefone  String
+//  cidade    String
+//  peso      Float
+//  altura    Float
+//  imc       Float
+//  senha     String
+//  createdAt DateTime @default(now())
+//  updatedAt DateTime @updatedAt
+// }
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId 
+  name String? 
+  username String? @unique 
+  email String? @unique 
+  emailVerified DateTime? 
+  image String? 
+  bio String? 
+  bannerImage String?
+  profileImage String?
+  dateOfBirth DateTime?
+  // Removed hashedPassword since we're using Google OAuth only
+  role UserRole @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  hasNotification Boolean?
+  // Removed 2FA fields since Google handles authentication
+  
+  accounts Account[]
+}
+
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  type String
+  provider String
+  providerAccountId String
+  refresh_token String?
+  access_token String?
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String?
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
