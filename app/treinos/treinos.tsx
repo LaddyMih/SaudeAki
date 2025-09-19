@@ -48,7 +48,7 @@ export const treinos: Treino[] = [
     nome: "Treino de Bíceps",
     grupo: "Bíceps",
     recomendacao: "Treinar com Costas", // Bíceps são secundários nos exercícios de costas, por isso combinam
-    img: "/imagens/costa.png",
+    img: "/imagens/biceps.png",
     exercicios: [
       {
         nome: "Rosca Direta",
@@ -102,7 +102,7 @@ export const treinos: Treino[] = [
     nome: "Treino de Tríceps",
     grupo: "Tríceps",
     recomendacao: "Treinar com Peito", // Tríceps são secundários nos exercícios de peito
-    img: "/imagens/peito.png",
+    img: "/imagens/tríceps.png",
     exercicios: [
       {
         nome: "Tríceps na Polia",
