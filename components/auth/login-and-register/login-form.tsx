@@ -8,12 +8,11 @@ import { FaGoogle } from "react-icons/fa";
 
 export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
       await signIn("google", {
-        callbackUrl: "/homepage",
+        callbackUrl: "/dashboard",
       });
     } catch (error) {
       console.error("Error during Google sign in:", error);
@@ -56,7 +55,7 @@ export const LoginForm = () => {
               href="/terms"
               className="text-blue-600 hover:text-blue-500 underline"
             >
-              Termmos de Uso
+              Termos de Uso
             </a>{" "}
             e{" "}
             <a

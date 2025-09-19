@@ -19,7 +19,7 @@ export default function TreinoDetalhe({ params }: Props) {
       <h1 className="text-3xl font-bold mb-4 text-center">{treino.nome}</h1>
 
       {/* Imagem do treino */}
-      <div className="relative h-[500] w-full overflow-hidden rounded-2xl shadow-2xl mb-4">
+      <div className="relative h-[400px] w-full overflow-hidden rounded-2xl shadow-2xl mb-4">
         <Image
           src={treino.img} // Coloque aqui a imagem do treino
           alt={treino.nome}
@@ -38,7 +38,7 @@ export default function TreinoDetalhe({ params }: Props) {
         {treino.exercicios.map((ex: Exercicio, index) => (
           <div
             key={index}
-            className="relative h-[130px] w-full overflow-hidden rounded-2xl shadow-2xl group"
+            className="relative h-[200px] w-full overflow-hidden rounded-2xl shadow-2xl group"
           >
             {/* Imagem do exercício
             <Image src={ex.img} alt={ex.nome} fill className="object-cover" /> */}

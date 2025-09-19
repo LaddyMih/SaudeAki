@@ -4,6 +4,8 @@ import Navbar from "@/components/navbar";
 import HeroSection from "@/components/HeroSection";
 import Cartao from "@/components/legacy/Cards/card";
 import Cartao_Artigos from "@/components/legacy/Cards/cardA";
+import Footer from "@/components/footer";
+
 
 export default function Page() {
   return (
@@ -12,6 +14,8 @@ export default function Page() {
       <HeroSection />
       <Cartao/>
       <Cartao_Artigos/>
+      <Footer/>
+
     </div>
   );
 }

@@ -102,7 +102,7 @@ export const treinos: Treino[] = [
     nome: "Treino de Tríceps",
     grupo: "Tríceps",
     recomendacao: "Treinar com Peito", // Tríceps são secundários nos exercícios de peito
-    img: "/imagens/tríceps.png",
+    img: "/imagens/triceps.png",
     exercicios: [
       {
         nome: "Tríceps na Polia",
@@ -129,7 +129,7 @@ export const treinos: Treino[] = [
     nome: "Treino de Quadríceps",
     grupo: "Quadríceps",
     recomendacao: "Treinar com Abdômen", // Quadríceps são grandes músculos das pernas, combinar com abdômen ajuda no equilíbrio do core
-    img: "/imagens/perna.png",
+    img: "/imagens/quadriceps.png",
     exercicios: [
       {
         nome: "Agachamento Livre",
@@ -156,7 +156,7 @@ export const treinos: Treino[] = [
     nome: "Treino de Abdômen",
     grupo: "Abdômen",
     recomendacao: "Treinar com Quadríceps", // Abdômen ajuda na estabilização durante exercícios de pernas
-    img: "/imagens/perna.png",
+    img: "/imagens/abdomen.png",
     exercicios: [
       {
         nome: "Prancha",
@@ -183,7 +183,7 @@ export const treinos: Treino[] = [
     nome: "Treino de Glúteos",
     grupo: "Glúteos",
     recomendacao: "Treinar com Posteriores", // Glúteos e posteriores trabalham juntos em exercícios de quadríceps posterior
-    img: "/imagens/perna.png",
+    img: "/imagens/posterior.png",
     exercicios: [
       {
         nome: "Hip Thrust",

@@ -29,9 +29,9 @@ export default auth((req) => {
   /* Caso o usuário tentar acessar "/" estando logado, 
     ele vai ser redirecionado para "/dashboard" 
   */
-  if (nextUrl.pathname === "/" && isLoggedIn) {
-    return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
-  }
+  // if (nextUrl.pathname === "/" && isLoggedIn) {
+  //   return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+  // }
 
   /* Quando o usuário estiver logado e tentar acessar as rotas de autenticação, o código
     redireciona ele automaticamente para a dashboard.
