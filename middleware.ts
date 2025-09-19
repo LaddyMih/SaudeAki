@@ -1,4 +1,3 @@
-// middleware.ts - Updated for Google-only authentication
 import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
 
