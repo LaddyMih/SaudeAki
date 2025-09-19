@@ -35,10 +35,10 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 bg-white shadow-md z-50 border-b border-gray-200 px-6 py-3 flex items-center justify-between">
       {/* Logo + Texto */}
       <Link href="/" className="flex items-center gap-3">
-        <Image src="/logo.png" alt="Saúde Aki" width={50} height={50} />
-        <span className="font-bold text-xl text-black hover:text-slate-500 transition-colors duration-200">
+        <Image src="/imagens/logo.png" alt="Saúde Aki" width={75} height={75} />
+        {/* <span className="font-bold text-xl text-black hover:text-slate-500 transition-colors duration-200">
           Saúde Aki
-        </span>
+        </span> */}
       </Link>
 
       {/* Menu desktop */}
