@@ -5,9 +5,11 @@ import Link from "next/link";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { treinos as treinosIniciais, Treino, Exercicio } from "./treinos";
+import { useRouter } from "next/navigation";
 
 export default function TreinosPage() {
   const [treinos, setTreinos] = useState<Treino[]>(treinosIniciais);
+  const router = useRouter();
 
   const excluirTreino = (id: number) => {
     setTreinos(treinos.filter((t) => t.id !== id));
@@ -15,6 +17,14 @@ export default function TreinosPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
+      {/* Botão de voltar */}
+      <button
+        onClick={() => router.back()}
+        className="mb-6 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition"
+      >
+        &larr; Voltar
+      </button>
+
       <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">
         Treinos
       </h1>

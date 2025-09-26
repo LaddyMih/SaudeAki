@@ -28,7 +28,7 @@ export default function Cartao() {
             title: "Planos Alimentares",
             text: "Dicas de dieta para uma alimentação saudável.",
             img: "/imagens/Alimentação.jpg",
-            link: "/planos",
+            link: "/planos-alimentares",
           },
           {
             title: "Monitoramento",

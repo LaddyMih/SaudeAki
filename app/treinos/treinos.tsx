@@ -239,6 +239,9 @@ export const treinos: Treino[] = [
         series: 3,
         repeticoes: "20",
       },
+      
     ],
+    
   },
 ];
+

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 
 interface DietaDetalheProps {
   params: { id: string };
@@ -21,7 +22,7 @@ const planos: Plano[] = [
     id: 1,
     titulo: "Plano Emagrecimento",
     descricao: "Focado em redução de gordura com refeições equilibradas.",
-    imagem: "/planos/emagrecimento.jpg",
+    imagem: "/imagens/emagrecimento.png",
     refeicoes: [
       { horario: "Café da manhã", nome: "Ovos mexidos", quantidade: "2 unidades" },
       { horario: "Lanche", nome: "Iogurte natural", quantidade: "200ml" },
@@ -34,7 +35,7 @@ const planos: Plano[] = [
     id: 2,
     titulo: "Plano Hipertrofia",
     descricao: "Rico em proteínas para ganho de massa muscular.",
-    imagem: "/planos/hipertrofia.jpg",
+    imagem: "/imagens/hipertrofia.png",
     refeicoes: [
       { horario: "Café da manhã", nome: "Omelete com aveia", quantidade: "3 ovos + 30g aveia" },
       { horario: "Lanche", nome: "Whey Protein", quantidade: "30g" },
@@ -47,7 +48,7 @@ const planos: Plano[] = [
     id: 3,
     titulo: "Plano Equilíbrio",
     descricao: "Para manter saúde e peso ideal com refeições balanceadas.",
-    imagem: "/planos/equilibrio.jpg",
+    imagem: "/imagens/equilibrio.png",
     refeicoes: [
       { horario: "Café da manhã", nome: "Pão integral com queijo", quantidade: "2 fatias" },
       { horario: "Lanche", nome: "Frutas sortidas", quantidade: "1 porção" },
@@ -58,12 +59,19 @@ const planos: Plano[] = [
   },
 ];
 
-export default function DietaDetalhe({ params }: DietaDetalheProps) {
+export default function DietaDetalhe(props: DietaDetalheProps) {
   const router = useRouter();
-  const plano = planos.find((p) => p.id === Number(params.id));
+
+  // Usa React.use() para acessar params
+  const params = React.use(props.params);
+
+  // Converte o ID para número para comparar com os dados
+  const planoId = Number(params.id);
+
+  const plano = planos.find((p) => p.id === planoId);
 
   if (!plano) {
-    return <p className="text-center mt-10 text-red-500">Plano não encontrado.</p>;
+    return <p className="text-center mt-10 text-red-500">Nenhum plano encontrado.</p>;
   }
 
   return (
