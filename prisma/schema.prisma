@@ -19,7 +19,7 @@ datasource db {
 // model Usuario {
 //  id        String   @id @default(auto()) @map("_id") @db.ObjectId
 //  nome      String
-//  idade     Int
+//  DataDeNascimento    Int
 //  email     String   @unique
 //  telefone  String
 //  cidade    String
@@ -47,6 +47,9 @@ model User {
   bannerImage String?
   profileImage String?
   dateOfBirth DateTime?
+  peso Int 
+  altura Float
+  objetivo String
   // Removed hashedPassword since we're using Google OAuth only
   role UserRole @default(USER)
   createdAt DateTime @default(now())

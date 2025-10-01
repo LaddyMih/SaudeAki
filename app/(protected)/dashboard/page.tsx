@@ -1,276 +1,242 @@
 "use client";
 
-import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SettingsSchema } from "@/schemas";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardHeader,
-    CardContent,
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
 } from "@/components/ui/card";
 import {
-    Form,
-    FormField,
-    FormControl,
-    FormItem,
-    FormLabel,
-    FormDescription,
-    FormMessage,
+  Form,
+  FormField,
+  FormControl,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
-import { useTransition, useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from "@/components/ui/select";
-import { UserRole } from "@prisma/client";
-import { Switch } from "@/components/ui/switch";
-import { useRouter } from "next/router";
 
-const Page = () => {
-    // const router = useRouter();
-    const user = useCurrentUser();
-    const [error, setError] = useState<string | undefined>();
-    const [success, setSuccess] = useState<string | undefined>();
-    const [isDeleting, setIsDeleting] = useState(false);
-    
-    const { update } = useSession();
-    let [isPending, startTransition] = useTransition();
-    const form = useForm<z.infer<typeof SettingsSchema>>({
-        resolver: zodResolver(SettingsSchema),
-        defaultValues: {
-            name: user?.name || undefined,
-            username: user?.username || undefined,
-            email: user?.email || undefined,
-            hashedPassword: "",
-            newPassword: "",
-            role: user?.role || undefined,
-        }
-    });
-    
-    const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
-        startTransition(() => {       
-            settings(values)
-            .then((data) => {
-                if(data.error){
-                    setError(data.error);
-                }
-                if(data.success){
-                    update();
-                    setSuccess(data.success);
-                    form.reset({...values});
-                }
-            })
-            .catch(() => setError("Something went wrong..."))
-        });
-    };
-  
-    // TODO: Remake this deleteAccount const
-    // const deleteAccount = async () => {
-    //     setIsDeleting(true);
-    //         try {
-    //             const result = await deleteUserAccount(user?.id!)
-    //             if(result.error){
-    //                 setError(result.error);
-    //             } else {
-    //                 setSuccess("Account deleted." );
-    //                 // router.push("/");
-    //             }
-    
-    //         } catch (error){
-    //             setError("Something went wrong...");
-    //         } finally {
-    //             setIsDeleting(false);
-    //         }
+type PerfilForm = {
+  nome: string;
+  dataNascimento: string;
+  altura: string;
+  peso: string;
+  objetivo: string;
+};
 
-       
-    // }
+const DashboardPerfil = () => {
+  const [editando, setEditando] = useState(false);
+  const [sucesso, setSucesso] = useState<string | undefined>();
+  const user = useCurrentUser();
+  const [carregando, setCarregando] = useState(true);
 
-    return (
-        <Card className="w-[600px]">
-            <CardHeader>
-                <p className="text-2xl font-semibold text-center">Settings</p>
-            </CardHeader>
-            <CardContent>
-                <Form {...form}>
-                    <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-                        <div className="space-y-4">
-                        <FormField 
-                        control={form.control}
-                        name="name"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Name</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                    {...field}
-                                    placeholder="John Doe"
-                                    disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                        <FormField 
-                        control={form.control}
-                        name="username"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Username</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                    {...field}
-                                    placeholder="@johndoe"
-                                    disabled={isPending}
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                        {user?.isOAuth !== true && (
-                            <>
-                        <FormField 
-                        control={form.control}
-                        name="email"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                    {...field}
-                                    placeholder="johndoe@example.com"
-                                    disabled={isPending}
-                                    type="email"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                        
-                        <FormField 
-                        control={form.control}
-                        name="hashedPassword"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Current Password</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                    {...field}
-                                    placeholder="******"
-                                    disabled={isPending}
-                                    type="password"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                        <FormField 
-                        control={form.control}
-                        name="newPassword"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>New Password</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                    {...field}
-                                    placeholder="******"
-                                    disabled={isPending}
-                                    type="password"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                        </>
-                    )}
-                        <FormField 
-                        control={form.control}
-                        name="role"
-                        render={({field}) => (
-                            <FormItem>
-                                <FormLabel>Role</FormLabel>
-                                <Select
-                                disabled={isPending}
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                >
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select a role"/>
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value={UserRole.ADMIN}>
-                                            Admin
-                                        </SelectItem>
-                                        <SelectItem value={UserRole.USER}>
-                                            User
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
+  const form = useForm<PerfilForm>({
+    defaultValues: {
+      nome: "",
+      dataNascimento: "",
+      altura: "",
+      peso: "",
+      objetivo: "",
+    },
+    mode: "onSubmit",
+  });
 
-                        {user?.isOAuth !== true && (
-                            
-                        <FormField 
-                        control={form.control}
-                        name="isTwoFactorEnabled"
-                        render={({field}) => (
-                            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
-                                <div className="space-y-0.5">
-                                    <FormLabel>2FA Authentication</FormLabel>
-                                    <FormDescription>
-                                        Enable 2FA Authentication for your account. Whether with email codes or TOTP.
-                                    </FormDescription>
-                                </div>
-                                <FormControl>
-                                    <Switch 
-                                    disabled={isPending}
-                                    checked={field.value ?? false}
-                                    onCheckedChange={(checked) => field.onChange(checked)}
-                                    />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                        />
-                        
-                    )}
-                        </div>
-                        <Button disabled={isPending} type="submit">
-                            Save
-                        </Button>
-                    </form>
-                </Form>
-            </CardContent>
-            {/* <CardContent>
-                <Button 
-                    variant="destructive" 
-                    onClick={deleteAccount}
-                    disabled={isPending}
-                    className="w-full mt-6"
-                >
-                    Delete Account
-                </Button>
-                {error && <div className="text-red-500">{error}</div>}
-                {success && <div className="text-green-500">{success}</div>}
-            </CardContent> */}
-        </Card>
-    );
-}
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        nome: user.name || "",
+        dataNascimento: user.dataNascimento || "",
+        altura: user.altura?.toString() || "",
+        peso: user.peso?.toString() || "",
+        objetivo: user.objetivo || "",
+      });
+      setCarregando(false);
+    }
+  }, [user, form]);
 
-export default Page;
+  const handleAlturaInput = (value: string) => {
+    let val = value.replace(/[^0-9.]/g, "");
+    const parts = val.split(".");
+    if (parts.length > 2) val = parts[0] + "." + parts[1];
+    if (parts[1]?.length > 2) val = parts[0] + "." + parts[1].slice(0, 2);
+    if (val.startsWith(".")) val = "0" + val;
+    if (parseFloat(val) > 2.5) val = "";
+    return val;
+  };
+
+  const handlePesoInput = (value: string) => {
+    let val = value.replace(/[^0-9.]/g, "");
+    const parts = val.split(".");
+    if (parts.length > 2) val = parts[0] + "." + parts[1];
+    if (parts[1]?.length > 2) val = parts[0] + "." + parts[1].slice(0, 2);
+    return val;
+  };
+
+  const onSubmit = async (values: PerfilForm) => {
+    try {
+      const payload = {
+        ...values,
+        altura: parseFloat(values.altura),
+        peso: parseFloat(values.peso),
+        userId: user?.id,
+      };
+
+      await fetch("/api/perfil", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      setSucesso("Perfil atualizado com sucesso!");
+      setEditando(false);
+    } catch (err) {
+      console.error(err);
+      setSucesso("Erro ao atualizar o perfil.");
+    }
+  };
+
+  if (carregando) return <p>Carregando...</p>;
+
+  return (
+    <Card className="w-[600px]">
+      <CardHeader>
+        <CardTitle className="text-center text-2xl font-semibold">
+          {editando ? "Editar Perfil" : "Meu Perfil"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="nome"
+              rules={{ required: "Nome é obrigatório" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input {...field} disabled={!editando} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="dataNascimento"
+              rules={{
+                required: "Data de nascimento é obrigatória",
+                validate: (value) => {
+                  const hoje = new Date();
+                  const data = new Date(value);
+                  return data <= hoje || "Data de nascimento não pode ser futura";
+                },
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data de Nascimento</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="date" disabled={!editando} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="altura"
+              rules={{
+                required: "Altura é obrigatória",
+                validate: (value) => parseFloat(value) > 0 || "Altura deve ser maior que zero",
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Altura (m)</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={!editando}
+                      value={field.value || ""}
+                      onChange={(e) => field.onChange(handleAlturaInput(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="peso"
+              rules={{
+                required: "Peso é obrigatório",
+                validate: (value) => parseFloat(value) > 0 || "Peso deve ser maior que zero",
+              }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Peso (kg)</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="text"
+                      disabled={!editando}
+                      value={field.value || ""}
+                      onChange={(e) => field.onChange(handlePesoInput(e.target.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Campo de objetivo substituído por select */}
+            <FormField
+              control={form.control}
+              name="objetivo"
+              rules={{ required: "Objetivo é obrigatório" }}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Objetivo</FormLabel>
+                  <FormControl>
+                    <select
+                      {...field}
+                      disabled={!editando}
+                      className="w-full border border-gray-300 rounded-md p-2"
+                    >
+                      <option value="">Selecione um objetivo</option>
+                      <option value="perder peso">Perder peso</option>
+                      <option value="ganhar massa muscular">Ganhar massa muscular</option>
+                      <option value="manter peso">Manter peso</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex gap-2 mt-4">
+              {editando ? (
+                <>
+                  <Button type="submit">Salvar</Button>
+                  <Button type="button" variant="outline" onClick={() => setEditando(false)}>Cancelar</Button>
+                </>
+              ) : (
+                <Button type="button" onClick={() => setEditando(true)}>Editar perfil</Button>
+              )}
+            </div>
+
+            {sucesso && <p className="text-green-500 mt-2">{sucesso}</p>}
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default DashboardPerfil;
