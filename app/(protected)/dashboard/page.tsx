@@ -2,12 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormField,
@@ -19,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { NavBar } from "@/components/dashboard/navbar";
 
 type PerfilForm = {
   nome: string;
@@ -98,144 +94,164 @@ const DashboardPerfil = () => {
     }
   };
 
-  if (carregando) return <p>Carregando...</p>;
+  if (carregando) return <p className="flex justify-center items-center">Carregando...</p>;
 
   return (
-    <Card className="w-[600px]">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl font-semibold">
-          {editando ? "Editar Perfil" : "Meu Perfil"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="nome"
-              rules={{ required: "Nome é obrigatório" }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input {...field} disabled={!editando} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className="flex justify-center items-center mt-2">
+      <Card className="w-[600px] bg-secondary">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl font-semibold">
+            {editando ? "Editar Perfil" : "Meu Perfil"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                control={form.control}
+                name="nome"
+                rules={{ required: "Nome é obrigatório" }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome</FormLabel>
+                    <FormControl>
+                      <Input {...field} disabled={!editando} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="dataNascimento"
-              rules={{
-                required: "Data de nascimento é obrigatória",
-                validate: (value) => {
-                  const hoje = new Date();
-                  const data = new Date(value);
-                  return data <= hoje || "Data de nascimento não pode ser futura";
-                },
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data de Nascimento</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="date" disabled={!editando} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="dataNascimento"
+                rules={{
+                  required: "Data de nascimento é obrigatória",
+                  validate: (value) => {
+                    const hoje = new Date();
+                    const data = new Date(value);
+                    return (
+                      data <= hoje || "Data de nascimento não pode ser futura"
+                    );
+                  },
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Data de Nascimento</FormLabel>
+                    <FormControl>
+                      <Input {...field} type="date" disabled={!editando} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="altura"
-              rules={{
-                required: "Altura é obrigatória",
-                validate: (value) => parseFloat(value) > 0 || "Altura deve ser maior que zero",
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Altura (m)</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      disabled={!editando}
-                      value={field.value || ""}
-                      onChange={(e) => field.onChange(handleAlturaInput(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="altura"
+                rules={{
+                  required: "Altura é obrigatória",
+                  validate: (value) =>
+                    parseFloat(value) > 0 || "Altura deve ser maior que zero",
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Altura (m)</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        disabled={!editando}
+                        value={field.value || ""}
+                        onChange={(e) =>
+                          field.onChange(handleAlturaInput(e.target.value))
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="peso"
-              rules={{
-                required: "Peso é obrigatório",
-                validate: (value) => parseFloat(value) > 0 || "Peso deve ser maior que zero",
-              }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Peso (kg)</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      disabled={!editando}
-                      value={field.value || ""}
-                      onChange={(e) => field.onChange(handlePesoInput(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="peso"
+                rules={{
+                  required: "Peso é obrigatório",
+                  validate: (value) =>
+                    parseFloat(value) > 0 || "Peso deve ser maior que zero",
+                }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Peso (kg)</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        disabled={!editando}
+                        value={field.value || ""}
+                        onChange={(e) =>
+                          field.onChange(handlePesoInput(e.target.value))
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            {/* Campo de objetivo substituído por select */}
-            <FormField
-              control={form.control}
-              name="objetivo"
-              rules={{ required: "Objetivo é obrigatório" }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Objetivo</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      disabled={!editando}
-                      className="w-full border border-gray-300 rounded-md p-2"
+              {/* Campo de objetivo substituído por select */}
+              <FormField
+                control={form.control}
+                name="objetivo"
+                rules={{ required: "Objetivo é obrigatório" }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Objetivo</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        disabled={!editando}
+                        className="w-full border border-gray-300 rounded-md p-2"
+                      >
+                        <option value="">Selecione um objetivo</option>
+                        <option value="perder peso">Perder peso</option>
+                        <option value="ganhar massa muscular">
+                          Ganhar massa muscular
+                        </option>
+                        <option value="manter peso">Manter peso</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex gap-2 mt-4">
+                {editando ? (
+                  <>
+                    <Button type="submit">Salvar</Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setEditando(false)}
                     >
-                      <option value="">Selecione um objetivo</option>
-                      <option value="perder peso">Perder peso</option>
-                      <option value="ganhar massa muscular">Ganhar massa muscular</option>
-                      <option value="manter peso">Manter peso</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      Cancelar
+                    </Button>
+                  </>
+                ) : (
+                  <Button type="button" onClick={() => setEditando(true)}>
+                    Editar perfil
+                  </Button>
+                )}
+              </div>
 
-            <div className="flex gap-2 mt-4">
-              {editando ? (
-                <>
-                  <Button type="submit">Salvar</Button>
-                  <Button type="button" variant="outline" onClick={() => setEditando(false)}>Cancelar</Button>
-                </>
-              ) : (
-                <Button type="button" onClick={() => setEditando(true)}>Editar perfil</Button>
-              )}
-            </div>
-
-            {sucesso && <p className="text-green-500 mt-2">{sucesso}</p>}
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              {sucesso && <p className="text-green-500 mt-2">{sucesso}</p>}
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
