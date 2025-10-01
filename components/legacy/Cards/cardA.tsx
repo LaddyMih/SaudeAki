@@ -1,5 +1,8 @@
+"use client";
+
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Cartao_Artigos() {
   return (
@@ -34,9 +37,13 @@ export default function Cartao_Artigos() {
             <p className="text-sm text-gray-200 mb-4">
               Descubra hábitos que atrapalham seu descanso e como substituí-los.
             </p>
-            <button className="px-4 py-2 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition">
+            
+            <Link
+              href="/artigos/sono"
+              className="px-4 py-2 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition inline-block"
+            >
               Veja mais
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -58,9 +65,13 @@ export default function Cartao_Artigos() {
             <p className="text-sm text-gray-200 mb-4">
               Pequenas mudanças diárias que fazem grande diferença na saúde.
             </p>
-            <button className="px-4 py-2 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition">
+            
+            <Link
+              href="/artigos/habitos-saudaveis"
+              className="px-4 py-2 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition inline-block"
+            >
               Veja mais
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -82,9 +93,13 @@ export default function Cartao_Artigos() {
             <p className="text-sm text-gray-200 mb-4">
               Conheça os impactos positivos dessa prática para o corpo e mente.
             </p>
-            <button className="px-4 py-2 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition">
+            
+            <Link
+              href="/artigos/treino-funcional"
+              className="px-4 py-2 border border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition inline-block"
+            >
               Acesse aqui
-            </button>
+            </Link>
           </div>
         </div>
       </div>

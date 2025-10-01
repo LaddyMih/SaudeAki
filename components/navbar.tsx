@@ -46,7 +46,7 @@ export default function Navbar() {
         <Link href="/" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
           Início
         </Link>
-        <Link href="/Cards/card" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
+        <Link href="/card" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
           Treinos
         </Link>
         <Link href="/" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
@@ -111,7 +111,7 @@ export default function Navbar() {
           <Link href="/" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
             Início
           </Link>
-          <Link href="/Cards/card" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
+          <Link href="/card" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
             Treinos
           </Link>
           <Link href="/" className="text-black font-medium hover:text-slate-500 transition-colors duration-200">
@@ -128,7 +128,7 @@ export default function Navbar() {
           ) : (
             <Link href="/login" className="w-full">
               <Button className="text-white bg-black px-6 py-2 rounded-md font-medium w-full transition-transform duration-150 ease-in-out active:scale-95 hover:cursor-pointer">
-                Login
+                Entrar
               </Button>
             </Link>
           )}
