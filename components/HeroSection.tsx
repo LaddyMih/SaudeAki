@@ -14,7 +14,7 @@ export default function HeroSection() {
       </p>
     
     
-    <Link href="/cadastro" passHref>
+    <Link href="/login" passHref>
           <Button
             className={cn(
               "text-white bg-black w-[10rem] font-normal",

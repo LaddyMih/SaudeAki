@@ -64,7 +64,7 @@ const DashboardPerfil = () => {
     if (parts.length > 2) val = parts[0] + "." + parts[1];
     if (parts[1]?.length > 2) val = parts[0] + "." + parts[1].slice(0, 2);
     if (val.startsWith(".")) val = "0" + val;
-    if (parseFloat(val) > 2.5) val = "";
+    if (parseFloat(val) > 2.5) val = "2.50";
     return val;
   };
 
@@ -195,7 +195,7 @@ const DashboardPerfil = () => {
               )}
             />
 
-            {/* Campo de objetivo substituído por select */}
+            {/* Campo de objetivo com placeholder funcional */}
             <FormField
               control={form.control}
               name="objetivo"
@@ -209,7 +209,9 @@ const DashboardPerfil = () => {
                       disabled={!editando}
                       className="w-full border border-gray-300 rounded-md p-2"
                     >
-                      <option value="">Selecione um objetivo</option>
+                      <option value="" disabled={!!field.value}>
+                        {field.value ? field.value : "Selecione um objetivo"}
+                      </option>
                       <option value="perder peso">Perder peso</option>
                       <option value="ganhar massa muscular">Ganhar massa muscular</option>
                       <option value="manter peso">Manter peso</option>

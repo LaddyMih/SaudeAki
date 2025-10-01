@@ -16,11 +16,11 @@ export const NavBar = () => {
 
                 </Button>
                 <Button asChild variant={pathname === "/settings" ? "default" : "outline"}>
-                    <Link href="/settings">Settings</Link>
+                    <Link href="/">Ínicio</Link>
 
                 </Button>
                 <Button asChild variant={pathname === "/client" ? "default" : "outline"}>
-                    <Link href="/client">Client</Link>
+                    <Link href="/dashboard">Editar Perfil</Link>
                 </Button>
                 <Button asChild variant={pathname === "/admin" ? "default" : "outline"}>
                     <Link href="/admin">Admin</Link>
