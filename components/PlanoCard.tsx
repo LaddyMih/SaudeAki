@@ -29,14 +29,14 @@ export default function PlanoCard({ titulo, descricao, imagem, onClick }: PlanoC
 
       {/* Conteúdo */}
       <div className="p-5 flex flex-col gap-3">
-        <h3 className="text-2xl font-semibold text-gray-900 group-hover:text-green-600 transition-colors duration-300">
+        <h3 className="text-2xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
           {titulo}
         </h3>
         <p className="text-gray-600 text-sm leading-relaxed">{descricao}</p>
 
         <button
           onClick={onClick}
-          className="mt-3 bg-green-600 text-white px-5 py-2 rounded-full font-medium hover:bg-green-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
+          className="mt-3 bg-blue-600 text-white px-5 py-2 rounded-full font-medium hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
         >
           Ver Plano
         </button>

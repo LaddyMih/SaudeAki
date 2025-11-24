@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
+// import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { treinos as treinosIniciais, Treino, Exercicio } from "./treinos";
 import { useRouter } from "next/navigation";
+import TreinoDetalhe from "./[id]/page";
 
 export default function TreinosPage() {
   const [treinos, setTreinos] = useState<Treino[]>(treinosIniciais);
@@ -75,10 +76,10 @@ export default function TreinosPage() {
               </div>
 
               <button
-                onClick={() => excluirTreino(treino.id)}
-                className="mt-4 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full w-full"
+                onClick={() => router.push (`/treinos/${treino.id}`)}
+                className="mt-4 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full w-full"
               >
-                <Trash2 size={16} /> Excluir Treino
+                Ver treino 
               </button>
             </div>
           </div>

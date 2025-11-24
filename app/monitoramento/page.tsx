@@ -35,7 +35,7 @@ export default function MonitoramentoPage() {
     { name: "Não feitos", value: naoFeitos },
   ];
 
-  const COLORS = ["#4ade80", "#e5e7eb"];
+  const COLORS = ["#0486F0", "#bdbdbd"];
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">

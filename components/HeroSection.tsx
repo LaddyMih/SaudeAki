@@ -28,9 +28,9 @@ export default function HeroSection() {
   const estaLogado = !!nome;
 
   return (
-<<<<<<< HEAD
+ 
     <div>
-    <section className="flex flex-col items-center justify-center min-h-screen pt-[120px]">
+    {/* <section className="flex flex-col items-center justify-center min-h-screen pt-[120px]">
       <h1 className="text-4xl font-bold text-center mb-4">
         Bem-vindo ao Saúde Aki
       </h1>
@@ -38,9 +38,10 @@ export default function HeroSection() {
         Aqui você encontra treinos, artigos e dicas para melhorar sua saúde.
       </p>
     
+    </section> */}
     
-    <Link href="/login" passHref>
-=======
+    <Link href="/login" passHref/>
+     
     <section className="relative flex flex-col lg:flex-row items-center justify-between min-h-screen text-center lg:text-left px-6 lg:px-20 overflow-hidden bg-gradient-to-b from-blue-50 to-white pt-[100px]">
       {/* Fundo decorativo suave */}
       <div className="absolute inset-0 bg-[url('/hero-bg.svg')] bg-cover bg-center opacity-10"></div>
@@ -56,7 +57,7 @@ export default function HeroSection() {
         </p>
 
         <Link href={estaLogado ? "/monitoramento" : "/login"} passHref>
->>>>>>> 10ba1c0b9a67577094151fd494fdfc272abf4c60
+
           <Button
             className={cn(
               "text-white bg-blue-600 hover:bg-blue-700 font-semibold text-lg px-8 py-6 rounded-full shadow-md",
@@ -87,5 +88,6 @@ export default function HeroSection() {
         </ResponsiveContainer>
       </div>
     </section>
+    </div>
   );
 }
