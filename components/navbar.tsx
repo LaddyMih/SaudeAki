@@ -1,3 +1,5 @@
+// navbar do index ("/")
+
 "use client";
 
 import { useState, useEffect, use } from "react";
@@ -8,26 +10,34 @@ import { cn } from "@/lib/utils";
 import { titleFont } from "@/fonts/fonts";
 import { useRouter } from "next/router";
 
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { FaUser } from "react-icons/fa";
+import { logout } from "@/actions/logout";
+
+// type User = {
+//   id: number;
+//   name: string;
+//   email: string;
+// };
 
 export default function Navbar() {
+  const user = useCurrentUser();
+
+  const onClick = () => {
+    logout();
+  }
+
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
   const [scrolled, setScrolled] = useState(false);
 
-  
-
-
-  useEffect(() => {
-    fetch("/api/me")
-      .then((res) => res.json())
-      .then((data) => setUser(data.user || null));
+  // useEffect(() => {
+  //   fetch("/api/me")
+  //     .then((res) => res.json())
+  //     .then((data) => setUser(data.user || null));
       
-  }, []);
+  // }, []);
 
   // Detecta scroll para mudar o estilo da navbar
   useEffect(() => {
@@ -42,13 +52,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleLogout = async () => {
-    await fetch("/api/logout", { method: "POST" });
-    setUser(null);
-  };
+  // const handleLogout = async () => {
+  //   await fetch("/api/logout", { method: "POST" });
+  //   setUser(null);
+  // };
 
   // Corrigido: isAuthenticated é true se o usuário existir
-  const isAuthenticated = !!user;
+  // const isAuthenticated = !!user;
 
   return (
     <nav
@@ -85,14 +95,23 @@ export default function Navbar() {
 
       {/* Ações */}
       <div className="flex items-center gap-4">
-        {isAuthenticated ? (
+        {user ? (
           <div className="hidden md:flex items-center gap-3">
             {/* Corrigido: Exibe apenas o nome do usuário */}
             <span className="text-gray-700 font-medium">Olá, {user?.name}</span>
             
+            <Avatar>
+                    <Link
+                    href="/dashboard"
+                    >
+                    <AvatarImage className="transition-transform duration-150 active:scale-[80%]" src={user?.image || ""} />
+                    <AvatarFallback className="bg-sky-500 transition-transform duration-150 active:scale-95"><FaUser className="text-white" /></AvatarFallback>
+                    </Link>
+            </Avatar>
+
             <Button
-              onClick={handleLogout}
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-full transition-transform duration-150 active:scale-95"
+              onClick={onClick}
             >
               Sair
             </Button>
@@ -151,9 +170,8 @@ export default function Navbar() {
     Artigos
   </Link>
 
-  {isAuthenticated ? (
+  {user ? (
     <Button
-      onClick={handleLogout}
       className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full rounded-full py-2 transition-transform duration-150 active:scale-95"
     >
       Sair

@@ -6,6 +6,8 @@ import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
 
+import { useCurrentUser } from "@/hooks/use-current-user";
+
 const data = [
   { dia: "Seg", valor: 60 },
   { dia: "Ter", valor: 68 },
@@ -17,6 +19,7 @@ const data = [
 ];
 
 export default function HeroSection() {
+  const user = useCurrentUser();
   const [nome, setNome] = useState<string | null>(null);
 
   useEffect(() => {
@@ -56,7 +59,7 @@ export default function HeroSection() {
           Encontre treinos, artigos e dicas para transformar sua saúde e bem-estar.
         </p>
 
-        <Link href={estaLogado ? "/monitoramento" : "/login"} passHref>
+        <Link href={user ? "/monitoramento" : "/login"} passHref>
 
           <Button
             className={cn(
@@ -64,7 +67,7 @@ export default function HeroSection() {
               "transition-transform duration-200 ease-in-out hover:scale-105 active:scale-95"
             )}
           >
-            {estaLogado ? "Ir para Dashboard" : "Comece Agora"}
+            {user ? "Ir para Monitoramento" : "Comece Agora"}
           </Button>
         </Link>
       </div>
