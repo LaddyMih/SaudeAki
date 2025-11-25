@@ -60,7 +60,7 @@ const DashboardPerfil = () => {
     if (parts.length > 2) val = parts[0] + "." + parts[1];
     if (parts[1]?.length > 2) val = parts[0] + "." + parts[1].slice(0, 2);
     if (val.startsWith(".")) val = "0" + val;
-    if (parseFloat(val) > 2.5) val = "2.50";
+    if (parseFloat(val) > 2.5) val = "";
     return val;
   };
 
@@ -200,32 +200,51 @@ const DashboardPerfil = () => {
                 )}
               />
 
-            {/* Campo de objetivo com placeholder funcional */}
-            <FormField
-              control={form.control}
-              name="objetivo"
-              rules={{ required: "Objetivo é obrigatório" }}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Objetivo</FormLabel>
-                  <FormControl>
-                    <select
-                      {...field}
-                      disabled={!editando}
-                      className="w-full border border-gray-300 rounded-md p-2"
+              {/* Campo de objetivo substituído por select */}
+              <FormField
+                control={form.control}
+                name="objetivo"
+                rules={{ required: "Objetivo é obrigatório" }}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Objetivo</FormLabel>
+                    <FormControl>
+                      <select
+                        {...field}
+                        disabled={!editando}
+                        className="w-full border border-gray-300 rounded-md p-2"
+                      >
+                        <option value="">Selecione um objetivo</option>
+                        <option value="perder peso">Perder peso</option>
+                        <option value="ganhar massa muscular">
+                          Ganhar massa muscular
+                        </option>
+                        <option value="manter peso">Manter peso</option>
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex gap-2 mt-4">
+                {editando ? (
+                  <>
+                    <Button type="submit">Salvar</Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setEditando(false)}
                     >
-                      <option value="" disabled={!!field.value}>
-                        {field.value ? field.value : "Selecione um objetivo"}
-                      </option>
-                      <option value="perder peso">Perder peso</option>
-                      <option value="ganhar massa muscular">Ganhar massa muscular</option>
-                      <option value="manter peso">Manter peso</option>
-                    </select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      Cancelar
+                    </Button>
+                  </>
+                ) : (
+                  <Button type="button" onClick={() => setEditando(true)}>
+                    Editar perfil
+                  </Button>
+                )}
+              </div>
 
               {sucesso && <p className="text-green-500 mt-2">{sucesso}</p>}
             </form>

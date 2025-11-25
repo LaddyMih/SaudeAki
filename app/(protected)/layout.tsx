@@ -6,7 +6,7 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (
-    <div className="h-screen bg-[rgb(55, 15, 199)]">
+    <div className="h-screen bg-[rgba(43,43,43,1)]">
       <div className="flex justify-center items-center">
         <NavBar />
       </div>

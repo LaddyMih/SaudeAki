@@ -14,6 +14,15 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { FaUser } from "react-icons/fa";
 import { logout } from "@/actions/logout";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { LogoutButton } from "./auth/logout-button";
+import { ExitIcon } from "@radix-ui/react-icons";
+import { HomeIcon } from "lucide-react";
 
 // type User = {
 //   id: number;
@@ -26,7 +35,7 @@ export default function Navbar() {
 
   const onClick = () => {
     logout();
-  }
+  };
 
   const [isOpen, setIsOpen] = useState(false);
   // const [user, setUser] = useState<User | null>(null);
@@ -36,7 +45,7 @@ export default function Navbar() {
   //   fetch("/api/me")
   //     .then((res) => res.json())
   //     .then((data) => setUser(data.user || null));
-      
+
   // }, []);
 
   // Detecta scroll para mudar o estilo da navbar
@@ -70,7 +79,10 @@ export default function Navbar() {
       )}
     >
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-3 group transition-all duration-200">
+      <Link
+        href="/"
+        className="flex items-center gap-3 group transition-all duration-200"
+      >
         <Image
           src="/imagens/logo.png"
           alt="Saúde Aki"
@@ -82,13 +94,22 @@ export default function Navbar() {
 
       {/* Links desktop */}
       <div className={cn(titleFont.className, "hidden md:flex gap-10")}>
-        <Link href="/" className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
+        <Link
+          href="/"
+          className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
+        >
           Início
         </Link>
-        <Link href="/card" className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
+        <Link
+          href="/card"
+          className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
+        >
           Treinos
         </Link>
-        <Link href="/" className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
+        <Link
+          href="/"
+          className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
+        >
           Artigos
         </Link>
       </div>
@@ -98,23 +119,39 @@ export default function Navbar() {
         {user ? (
           <div className="hidden md:flex items-center gap-3">
             {/* Corrigido: Exibe apenas o nome do usuário */}
-            <span className="text-gray-700 font-medium">Olá, {user?.name}</span>
-            
-            <Avatar>
-                    <Link
-                    href="/dashboard"
-                    >
-                    <AvatarImage className="transition-transform duration-150 active:scale-[80%]" src={user?.image || ""} />
-                    <AvatarFallback className="bg-sky-500 transition-transform duration-150 active:scale-95"><FaUser className="text-white" /></AvatarFallback>
-                    </Link>
-            </Avatar>
+            <span className="text-gray-700 font-medium mr-2">Olá, {user?.name}</span>
 
-            <Button
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage src={user?.image || ""} />
+                  <AvatarFallback className="bg-sky-500">
+                    <FaUser className="text-white" />
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-40" align="end">
+                <Link href="/dashboard">
+                  <DropdownMenuItem>
+                    <HomeIcon className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </DropdownMenuItem>
+                </Link>
+                <LogoutButton>
+                  <DropdownMenuItem>
+                    <ExitIcon className="h-4 w-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </LogoutButton>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* <Button
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-full transition-transform duration-150 active:scale-95"
               onClick={onClick}
             >
               Sair
-            </Button>
+            </Button> */}
           </div>
         ) : (
           <Link href="/auth/login" className="hidden md:block">
@@ -157,38 +194,49 @@ export default function Navbar() {
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
-       <div className="flex flex-col items-start p-6 gap-6 mt-16 bg-white rounded-xl shadow-md"> 
-  <Link href="/" className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
-    Início 
-  </Link>
+        <div className="flex flex-col items-start p-6 gap-6 mt-16 bg-white rounded-xl shadow-md">
+          <Link
+            href="/"
+            className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
+          >
+            Início
+          </Link>
 
-  <Link href="/cartao" className="text-gray-700 font-medium hover:text-blue-600 duration-200">
-    Treinos
-  </Link>
+          <Link
+            href="/cartao"
+            className="text-gray-700 font-medium hover:text-blue-600 duration-200"
+          >
+            Treinos
+          </Link>
 
-  <Link href="/" className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200">
-    Artigos
-  </Link>
+          <Link
+            href="/"
+            className="text-gray-700 font-medium hover:text-blue-600 transition-colors duration-200"
+          >
+            Artigos
+          </Link>
 
-  {user ? (
-    <Button
-      className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full rounded-full py-2 transition-transform duration-150 active:scale-95"
-    >
-      Sair
-    </Button>
-  ) : (
-    <Link href="/login" className="w-full">
-      <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full rounded-full py-2 transition-transform duration-150 active:scale-95">
-        Entrar
-      </Button>
-    </Link>
-  )}
-</div>
-
+          {user ? (
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full rounded-full py-2 transition-transform duration-150 active:scale-95">
+              Sair
+            </Button>
+          ) : (
+            <Link href="/login" className="w-full">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-medium w-full rounded-full py-2 transition-transform duration-150 active:scale-95">
+                Entrar
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Fundo escuro ao abrir menu */}
-      {isOpen && <div className="fixed inset-0 bg-black/40 z-30" onClick={() => setIsOpen(false)} />}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-30"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
     </nav>
   );
 }
